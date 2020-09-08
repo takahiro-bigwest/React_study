@@ -17,21 +17,49 @@ import ReactDOM from 'react-dom';
 // 空になった関数の宣言部分を削除する。
 
 class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {date: new Date()};
+  }
+
+  componentDidMount() {
+    this.timerID = setInterval(
+      () => this.tick(),
+      1000
+    );
+  }
+
+  componentWillMount() {
+    clearInterval(this.timerID);
+  }
+
+  tick() {
+    this.setState({
+      date: new Date()
+    });
+  }
+
   render() {
     return (
       <div>
         <h1>Hello, world!</h1>
-        <h2>It is {this.props.date.toLocaleTimeString()}.</h2>
+        <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
       </div>
     );
   }
 }
 
-function tick() {
-  ReactDOM.render(
-    <Clock date={new Date()} />,
-    document.getElementById('root')
+function App() {
+  return (
+    <div>
+      <Clock />
+      <Clock />
+      <Clock />
+    </div>
   );
 }
 
-setInterval(tick, 1000);
+ReactDOM.render(
+  <App />,
+  document.getElementById('root')
+);
